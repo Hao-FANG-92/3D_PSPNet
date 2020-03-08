@@ -11,7 +11,7 @@ We propose a 3D pyramid module to enrich pointwise features with multi-scale con
  
 The architecture of our 3d-PSPNet is inspired by the succes of [PSPNet](https://arxiv.org/pdf/1612.01105.pdf) applied on 2D images.
 
-![Architecture](https://github.com/Hao-FANG-92/3D_PSPNet/blob/master/network.png)
+![Architecture](https://github.com/Hao-FANG-92/3D_PSPNet/blob/master/network.png)The architecture of our model.
 
 
 
