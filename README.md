@@ -11,13 +11,13 @@ We propose a 3D pyramid module to enrich pointwise features with multi-scale con
  
 The architecture of our 3d-PSPNet is inspired by the succes of [PSPNet](https://arxiv.org/pdf/1612.01105.pdf) applied on 2D images.
 
-![network.png](./)
+![Architecture](https://github.com/Hao-FANG-92/3D_PSPNet/blob/master/network.png) of our model.
 
 
 
 ## Installation
 
-Please following [PointNet++](https://github.com/charlesq34/pointnet2) to install the corresponding version of *python3.6*, *tensorflow 1.4.0*, and install user defined operator in *tf_ops*.
+Please following [PointNet++](https://github.com/charlesq34/pointnet2) to install the corresponding version of *python3.6*, *tensorflow 1.4.0*, and install user defined operators in *tf_ops*.
 
 
 
@@ -29,24 +29,52 @@ Please following the pipeline used in [PointNet](https://github.com/charlesq34/p
 
 ### Training
 
-Once you have downloaded prepared HDF5 files or prepared them by yourself, to start training:
+First, please train the baseline model from scratch.
 
     python train.py --log_dir log6 --test_area 6
     
-In default a simple model based on vanilla PointNet is used for training. Area 6 is used for test set.
+Because our 3d-PSPNet is imposed to incorporate multi-scale contextual information for each point, we conclude a fine-tuning strategy to obtain enriched pointwise feature.
+    
+    python train_pyramid.py --log_dir log6_pyramid --test_area 6 --model_path log6/model.ckpt
+    
+Note that the implementation of 3d-PSPNet in *train_pyramid.py* is based on a composition of tensorflow operators. For the efficient issue, we also implement two cuda based tensoflow operators *grid_pooling* and *grid_upsampling*. Users can use them for training by
+	
+	python train_pyramid_cuda.py --log_dir log6_pyramid_cuda --test_area 6 --model_path log6/model.ckpt
+
 
 ### Testing
 
-Testing requires download of 3D indoor parsing data and preprocessing with `collect_indoor3d_data.py`
+Users can evaluate the trained model by
 
-After training, use `batch_inference.py` command to segment rooms in test set. In our work we use 6-fold training that trains 6 models. For model1 , area2-6 are used as train set, area1 is used as test set. For model2, area1,3-6 are used as train set and area2 is used as test set... Note that S3DIS dataset paper uses a different 3-fold training, which was not publicly announced at the time of our work.
+	python batch_inference_pyramid.py --model_path log6_pyramid/model.ckpt --dump_dir log6_pyramid/dump_new --output_filelist log6_pyramid/output_filelist.txt --room_data_filelist meta/area6_data_label.txt --visu
 
-For example, to test model6, use command:
+or by
 
-    python batch_inference.py --model_path log6/model.ckpt --dump_dir log6/dump --output_filelist log6/output_filelist.txt --room_data_filelist meta/area6_data_label.txt --visu
-
-Some OBJ files will be created for prediciton visualization in `log6/dump`.
-
-To evaluate overall segmentation accuracy, we evaluate 6 models on their corresponding test areas and use `eval_iou_accuracy.py` to produce point classification accuracy and IoU as reported in the paper. 
+	python batch_inference_pyramid_cuda.py --model_path log6_pyramid_cuda/model.ckpt --dump_dir log6_pyramid_cuda/dump_new --output_filelist log6_pyramid_cuda/output_filelist.txt --room_data_filelist meta/area6_data_label.txt --visu
 
 
+Finally, evaluate overall segmentation accuracy by
+
+	python eval_iou_accuracy.py
+	
+
+### Citation
+
+If you find our work useful for your reasearch topic, please cite our paper by
+
+	@article{Fang_jprs19,
+	author = {Fang, Hao and Lafarge, Florent},
+	title = {{Pyramid scene parsing network in 3D: Improving semantic segmentation of point clouds with multi-scale contextual information}},
+	journal = {ISPRS Journal of Photogrammetry and Remote Sensing},
+	volume = {154},
+	year = {2019},	
+	}
+
+### License
+
+ MIT License
+ 
+### Acknowledgement
+
+The main structure of our code is based on [PointNet](https://github.com/charlesq34/pointnet/tree/master/sem_seg).
+The cuda implementation of our tf_ops is inspired by [RSNet](https://github.com/qianguih/RSNet) 
