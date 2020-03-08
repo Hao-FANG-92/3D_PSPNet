@@ -11,7 +11,7 @@ We propose a 3D pyramid module to enrich pointwise features with multi-scale con
  
 The architecture of our 3d-PSPNet is inspired by the succes of [PSPNet](https://arxiv.org/pdf/1612.01105.pdf) applied on 2D images.
 
-![Architecture](https://github.com/Hao-FANG-92/3D_PSPNet/blob/master/network.png) of our model.
+![Architecture](https://github.com/Hao-FANG-92/3D_PSPNet/blob/master/network.png)
 
 
 
@@ -25,7 +25,7 @@ Please following [PointNet++](https://github.com/charlesq34/pointnet2) to instal
 
 ### Dataset 
 
-Please following the pipeline used in [PointNet](https://github.com/charlesq34/pointnet/tree/master/sem_seg)
+Please following the pipeline used in [PointNet](https://github.com/charlesq34/pointnet/tree/master/sem_seg).
 
 ### Training
 
@@ -77,4 +77,4 @@ If you find our work useful for your reasearch topic, please cite our paper by
 ### Acknowledgement
 
 The main structure of our code is based on [PointNet](https://github.com/charlesq34/pointnet/tree/master/sem_seg).
-The cuda implementation of our tf_ops is inspired by [RSNet](https://github.com/qianguih/RSNet) 
+The cuda implementation of our tf_ops is inspired by [RSNet](https://github.com/qianguih/RSNet).
